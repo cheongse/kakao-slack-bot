@@ -14,7 +14,8 @@ app.get("/kakao", (req, res) => {
 app.post("/kakao", async (req, res) => {
   const userMessage = req.body?.userRequest?.utterance || "메시지 없음";
 
-  await axios.post(process.env.SLACK_WEBHOOK_URL, {
+  await axios.post(process.env.process.env.SLACK_BOT_TOKEN
+, {
     text: `[카카오 문의]\n${userMessage}`
   });
 
