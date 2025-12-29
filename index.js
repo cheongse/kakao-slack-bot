@@ -1,22 +1,18 @@
-const express = require("express");
-const axios = require("axios");
+import express from "express";
+import fetch from "node-fetch";
 
 const app = express();
 app.use(express.json());
 
-
-// GET 테스트용
-app.get("/kakao", (req, res) => {
-  res.send("kakao webhook alive");
-});
-
-// POST (카카오 실제 호출)
 app.post("/kakao", async (req, res) => {
-  const userMessage = req.body?.userRequest?.utterance || "메시지 없음";
+  const message = req.body?.userRequest?.utterance || "메시지 없음";
 
-  await axios.post(process.env.process.env.SLACK_BOT_TOKEN
-, {
-    text: `[카카오 문의]\n${userMessage}`
+  await fetch(process.env.SLACK_WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      text: `[카카오 문의]\n${message}`
+    })
   });
 
   res.json({
